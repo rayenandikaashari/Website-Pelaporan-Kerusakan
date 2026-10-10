@@ -51,14 +51,18 @@ class LaporanKerusakanController extends Controller
     }
 
     public function show(LaporanKerusakan $laporan)
-    {
-        abort_unless(
-            $laporan->operator_id === auth()->id(),
-            403
-        );
+{
+    abort_unless(
+        $laporan->operator_id === auth()->id(),
+        403
+    );
 
-        $laporan->load(['mesin', 'teknisi', 'penggunaanSparepart.sparepart']);
+    $laporan->load([
+        'mesin',
+        'teknisi',
+        'penggunaanSparepart.sparepart',
+    ]);
 
-        return view('operator.laporan.show', compact('laporan'));
-    }
+    return view('operator.laporan.show', compact('laporan'));
+}
 }
