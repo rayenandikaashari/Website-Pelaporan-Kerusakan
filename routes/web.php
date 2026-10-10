@@ -3,12 +3,30 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Operator\LaporanKerusakanController;
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
 Route::middleware('auth')->group(function () {
+
+Route::prefix('operator')
+    ->name('operator.')
+    ->middleware('auth')
+    ->group(function () {
+        Route::get('/laporan', [LaporanKerusakanController::class, 'index'])
+            ->name('laporan.index');
+
+        Route::get('/laporan/buat', [LaporanKerusakanController::class, 'create'])
+            ->name('laporan.create');
+
+        Route::post('/laporan', [LaporanKerusakanController::class, 'store'])
+            ->name('laporan.store');
+
+        Route::get('/laporan/{laporan}', [LaporanKerusakanController::class, 'show'])
+            ->name('laporan.show');
+    });
 
     Route::get('/dashboard', function () {
         return match (auth()->user()->role) {
